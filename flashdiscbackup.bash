@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/bash -x
 
 # ---------------------------------------------------------------------
 # FlashDiscBackup - Bash shell script to make backup for important 
@@ -23,4 +23,29 @@
 # 2022-06-16 Created
 # ---------------------------------------------------------------------
 
+### VARIABLES 
 
+# backup list of catalogues
+name_backup_file_list='lst_test.txt'
+
+# path to the where pendrive should be mount
+path=/media/$USER
+disc_name=806E-B46B
+
+### FUNCTIONS 
+check_if_pendrive_mount() 
+{ 
+	cd $path 
+	
+	if [ "$(ls $disc_name)" == "System Volume Information" ]; then
+		echo "Disc is mounted"
+	else
+		echo "Disc is not mounted."
+		echo "Exit script."
+		exit
+	fi
+}
+
+### MAIN 
+
+check_if_pendrive_mount

@@ -1,2 +1,3 @@
 # ignore the temporary file
 *.swp
+./test
