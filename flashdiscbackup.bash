@@ -33,11 +33,14 @@ path=/media/$USER
 disc_name=806E-B46B
 
 ### FUNCTIONS 
+
+# check if pendrive is mounted
 check_if_pendrive_mount() 
-{ 
+{
 	cd $path 
 	
-	if [ "$(ls $disc_name)" == "System Volume Information" ]; then
+	# if [ "$(ls $disc_name)" == "System Volume Information" ]; then
+	if [ -d $disc_name ]; then
 		echo "Disc is mounted"
 	else
 		echo "Disc is not mounted."
