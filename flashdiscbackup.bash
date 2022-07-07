@@ -26,11 +26,14 @@
 ### VARIABLES 
 
 # backup list of catalogues
-name_backup_file_list='lst_test.txt'
+name_backup_file_list="lst_test.txt"
 
 # path to the where pendrive should be mount
 path=/media/$USER
 disc_name=806E-B46B
+
+# list of paths
+PATHS=()
 
 ### FUNCTIONS 
 
@@ -44,11 +47,40 @@ check_if_pendrive_mount()
 		echo "Disc is mounted"
 	else
 		echo "Disc is not mounted."
+	        echo "Try to mount flash disc and run this script one more time"
 		echo "Exit script."
 		exit
 	fi
+
+	cd ~
+}
+
+# read file with paths and check if catalogs exists
+check_if_path_exists(){
+
+	if [ -d $line ]; then
+		echo "Directory exists"
+		PATHS+=("$line")
+	else
+		echo "$line does not exist"
+	fi	
 }
 
 ### MAIN 
 
+# set the work path
+MY_PATH=$(pwd) 
+echo "$MY_PATH"
+
 check_if_pendrive_mount
+
+# return to the work path
+cd $MY_PATH
+
+while read line; do
+	echo "$line"
+	check_if_path_exists
+done <$name_backup_file_list
+
+# echo ${PATHS[@]}
+

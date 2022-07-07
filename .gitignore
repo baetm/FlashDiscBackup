@@ -1,3 +1,4 @@
 # ignore the temporary file
 *.swp
 test/
+lst_test.txt
