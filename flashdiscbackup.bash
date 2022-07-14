@@ -66,6 +66,11 @@ check_if_path_exists(){
 	fi	
 }
 
+# create the list of catalogue to archive
+create_list_of_catalogue(){
+	awk -F"/" '{print $(NF-1)}' $name_backup_file_list > catalogues_list.tmp
+}
+
 ### MAIN 
 
 # set the work path
@@ -80,6 +85,7 @@ cd $MY_PATH
 while read line; do
 	echo "$line"
 	check_if_path_exists
+	create_list_of_catalogue
 done <$name_backup_file_list
 
 # echo ${PATHS[@]}
