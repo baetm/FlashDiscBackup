@@ -55,6 +55,12 @@ check_if_pendrive_mount()
 	cd ~
 }
 
+# creates temporary flash disc list of catalogue
+flash_disc_catalogues(){
+
+	ls $path/$disc_name > flashdisc_catalogues.tmp 
+}
+
 # read file with paths and check if catalogs exists
 check_if_path_exists(){
 
@@ -66,10 +72,10 @@ check_if_path_exists(){
 	fi	
 }
 
-# create the list of catalogue to archive
-create_list_of_catalogue(){
-	awk -F"/" '{print $(NF-1)}' $name_backup_file_list > catalogues_list.tmp
-}
+# TODO 
+# create_archives(){
+	# TODO	
+# }
 
 ### MAIN 
 
@@ -78,6 +84,7 @@ MY_PATH=$(pwd)
 echo "$MY_PATH"
 
 check_if_pendrive_mount
+flash_disc_catalogues
 
 # return to the work path
 cd $MY_PATH
@@ -85,7 +92,6 @@ cd $MY_PATH
 while read line; do
 	echo "$line"
 	check_if_path_exists
-	create_list_of_catalogue
 done <$name_backup_file_list
 
 # echo ${PATHS[@]}
