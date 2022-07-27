@@ -29,21 +29,24 @@
 name_backup_file_list="lst_test.txt"
 
 # path to the where pendrive should be mount
-path=/media/$USER
+flashdisc_path=/media/$USER
 disc_name=806E-B46B
 
-# list of paths
-PATHS=()
+# list of flashdisc catalogues 
+CATALOGUES=()
 
 # include option
 flag_process=0
+
+# if backup is doing first time
+first_time=0
 
 ### FUNCTIONS 
 
 # check if pendrive is mounted
 check_if_pendrive_mount() 
 {
-	cd $path 
+	cd $flashdisc_path 
 	
 	# if [ "$(ls $disc_name)" == "System Volume Information" ]; then
 	if [ -d $disc_name ]; then
@@ -55,13 +58,24 @@ check_if_pendrive_mount()
 		exit
 	fi
 
-	cd ~
+	cd $MY_PATH 
 }
 
-# creates temporary flash disc list of catalogue
+# creates temporary flash disc array of catalogue
 flash_disc_catalogues(){
 
-	ls $path/$disc_name > flashdisc_catalogues.tmp 
+	# creates temporary list of catalogues
+	ls $flashdisc_path/$disc_name > flashdisc_catalogues.tmp 
+
+	# add names of catalogues to array
+	while read line; do
+		CATALOGUES+=("$line")
+	done < flashdisc_catalogues.tmp 
+
+	echo ${CATALOGUES[@]}
+
+	# delete temprary list file
+	rm flashdisc_catalogues.tmp 
 }
 
 # read file with paths and check if catalogs exists
@@ -69,7 +83,6 @@ check_if_path_exists(){
 
 	if [ -d $line ]; then
 		echo "Directory exists"
-		PATHS+=("$line")
 	else
 		echo "$line does not exist"
 		flag_process=1
@@ -84,6 +97,23 @@ name_backup_catalogue(){
 		echo $catalogue_name
 	fi
 }
+
+# check if catalogue is backup first time or not
+first_time_backup(){
+
+	# check if catalogue was backed up in the past
+	for catalogue in "${CATALOGUES[@]}"
+	do
+		echo "$catalogue"
+
+		if [[ "$catalogue" =~ "$catalogue_name"_* ]]; then
+			echo "$catalogue_name is found"
+		else
+			echo "$catalogue_name is not found"
+		fi
+	done	
+}
+
 
 # TODO 
 # create_archives(){
@@ -106,6 +136,7 @@ while read line; do
 	echo "$line"
 	check_if_path_exists
 	name_backup_catalogue
+	first_time_backup
 done <$name_backup_file_list
 
 # echo ${PATHS[@]}
