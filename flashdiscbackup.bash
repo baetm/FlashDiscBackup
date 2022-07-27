@@ -35,6 +35,9 @@ disc_name=806E-B46B
 # list of paths
 PATHS=()
 
+# include option
+flag_process=0
+
 ### FUNCTIONS 
 
 # check if pendrive is mounted
@@ -69,7 +72,17 @@ check_if_path_exists(){
 		PATHS+=("$line")
 	else
 		echo "$line does not exist"
+		flag_process=1
 	fi	
+}
+
+# split the backup catalogue name in path
+name_backup_catalogue(){
+	
+	if [ "$flag_process" -eq 0 ]; then
+		catalogue_name=$(basename "$line")
+		echo $catalogue_name
+	fi
 }
 
 # TODO 
@@ -92,6 +105,7 @@ cd $MY_PATH
 while read line; do
 	echo "$line"
 	check_if_path_exists
+	name_backup_catalogue
 done <$name_backup_file_list
 
 # echo ${PATHS[@]}
