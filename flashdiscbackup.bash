@@ -111,6 +111,7 @@ first_time_backup(){
 		if [[ "$catalogue_name" =~ "$catalogue"_* ]]; then
 			echo "$catalogue_name is found"
 			first_time=0
+			update_catalogue="$catalogue_name"
 		else
 			echo "$catalogue_name is not found"
 			first_time=1
@@ -129,11 +130,25 @@ create_first_archive(){
 	       tar cvf "$first_time_catalogue.tar" $MY_PATH/test/$fist_time_catalogue/ 
 	       gzip "$first_time_catalogue.tar" 
 	       rm "$first_time_catalogue.tar" 
-	       cp "$first_time_catalogue.tar.gz" $flashdisc_path/$disc_name/
+	       cp "$first_time_catalogue.tar.gzp" $flashdisc_path/$disc_name/
 
 	       # echo "$first_time_catalogue"
 	       # echo "$line"
 	fi
+}
+
+update_old_archive(){
+
+	# Create temprary catalogue	
+	mkdir $HOME/TMP/
+	# copy old archive from flashdisc to PC catalogue
+	if [ "$first_time" -eq "0" ]; then
+		cp -r  $flashdisc_path/$disc_name/$update_catalogue/  $HOME/TMP/
+ 		sleep 100000 
+	fi
+
+	# delete TMP catalogue
+	rm -r $HOME/TMP/
 }
 
 
@@ -154,7 +169,8 @@ while read line; do
 	check_if_path_exists
 	name_backup_catalogue
 	first_time_backup
-	create_first_archive
+	# create_first_archive
+	update_old_archive
 done <$name_backup_file_list
 
 # echo ${PATHS[@]}
