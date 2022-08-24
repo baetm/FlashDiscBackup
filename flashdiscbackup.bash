@@ -40,6 +40,7 @@ flag_process=0
 
 # if backup is doing first time
 first_time=0
+first_time_catalogue=''
 
 ### FUNCTIONS 
 
@@ -83,6 +84,7 @@ check_if_path_exists(){
 
 	if [ -d $line ]; then
 		echo "Directory exists"
+		flag_process=0
 	else
 		echo "$line does not exist"
 		flag_process=1
@@ -106,19 +108,34 @@ first_time_backup(){
 	do
 		echo "$catalogue"
 
-		if [[ "$catalogue" =~ "$catalogue_name"_* ]]; then
+		if [[ "$catalogue_name" =~ "$catalogue"_* ]]; then
 			echo "$catalogue_name is found"
+			first_time=0
 		else
 			echo "$catalogue_name is not found"
+			first_time=1
+			first_time_catalogue="$catalogue_name"
+			echo "$first_time_catalogue"
 		fi
 	done	
 }
 
 
-# TODO 
-# create_archives(){
-	# TODO	
-# }
+# Create first archive if the catalogue is not exist in the flashdisc 
+create_first_archive(){
+	
+	# check if catalogue is new
+	if [ "$first_time" -eq "1" ]; then
+	       tar cvf "$first_time_catalogue.tar" $MY_PATH/test/$fist_time_catalogue/ 
+	       gzip "$first_time_catalogue.tar" 
+	       rm "$first_time_catalogue.tar" 
+	       cp "$first_time_catalogue.tar.gz" $flashdisc_path/$disc_name/
+
+	       # echo "$first_time_catalogue"
+	       # echo "$line"
+	fi
+}
+
 
 ### MAIN 
 
@@ -137,6 +154,7 @@ while read line; do
 	check_if_path_exists
 	name_backup_catalogue
 	first_time_backup
+	create_first_archive
 done <$name_backup_file_list
 
 # echo ${PATHS[@]}
