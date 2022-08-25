@@ -86,7 +86,6 @@ check_if_path_exists(){
 		echo "Directory exists"
 		flag_process=0
 	else
-		echo "$line does not exist"
 		flag_process=1
 	fi	
 }
@@ -106,11 +105,9 @@ first_time_backup(){
 	for catalogue in "${CATALOGUES[@]}"
 	do
 		if [[ "$catalogue_name.tar.gz" =~ "$catalogue" ]]; then
-			echo "$catalogue_name is found"
 			first_time=0
 			update_archive="$catalogue_name.tar.gz"
 		else
-			echo "$catalogue_name is not found"
 			first_time=1
 			first_time_catalogue="$catalogue_name"
 		fi
