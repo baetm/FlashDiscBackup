@@ -73,7 +73,7 @@ flash_disc_catalogues(){
 		CATALOGUES+=("$line")
 	done < flashdisc_catalogues.tmp 
 
-	echo ${CATALOGUES[@]}
+	# echo ${CATALOGUES[@]}
 
 	# delete temprary list file
 	 rm flashdisc_catalogues.tmp 
@@ -96,7 +96,6 @@ name_backup_catalogue(){
 	
 	if [ "$flag_process" -eq 0 ]; then
 		catalogue_name=$(basename "$line")
-		echo $catalogue_name
 	fi
 }
 
@@ -106,8 +105,6 @@ first_time_backup(){
 	# check if catalogue was backed up in the past
 	for catalogue in "${CATALOGUES[@]}"
 	do
-		echo "$catalogue"
-
 		if [[ "$catalogue_name.tar.gz" =~ "$catalogue" ]]; then
 			echo "$catalogue_name is found"
 			first_time=0
@@ -116,7 +113,6 @@ first_time_backup(){
 			echo "$catalogue_name is not found"
 			first_time=1
 			first_time_catalogue="$catalogue_name"
-			echo "$first_time_catalogue"
 		fi
 	done	
 }
@@ -144,9 +140,6 @@ update_old_archive(){
 		catalogue_date=$(date +%F -r $line)
 		archive_date=$(date +%F -r $flashdisc_path/$disc_name/$update_archive)
 
-		echo "$catalogue_date"
-		echo "$archive_date"
-
 		if [[ "$catalogue_date" > "$archive_date" ]]; then
 			 echo "Make a archive"
 			 tar cvf "$catalogue_name.tar" $line 
@@ -173,7 +166,6 @@ flash_disc_catalogues
 cd $MY_PATH
 
 while read line; do
-	echo "$line"
 	check_if_path_exists
 	name_backup_catalogue
 	first_time_backup
