@@ -1,4 +1,4 @@
-#! /bin/bash -x
+#! /bin/bash 
 
 # ---------------------------------------------------------------------
 # FlashDiscBackup - Bash shell script to make backup for important 
@@ -76,7 +76,7 @@ flash_disc_catalogues(){
 	echo ${CATALOGUES[@]}
 
 	# delete temprary list file
-	rm flashdisc_catalogues.tmp 
+	 rm flashdisc_catalogues.tmp 
 }
 
 # read file with paths and check if catalogs exists
@@ -108,10 +108,10 @@ first_time_backup(){
 	do
 		echo "$catalogue"
 
-		if [[ "$catalogue_name" =~ "$catalogue"_* ]]; then
+		if [[ "$catalogue_name.tar.gz" =~ "$catalogue" ]]; then
 			echo "$catalogue_name is found"
 			first_time=0
-			update_catalogue="$catalogue_name"
+			update_archive="$catalogue_name.tar.gz"
 		else
 			echo "$catalogue_name is not found"
 			first_time=1
@@ -126,7 +126,7 @@ first_time_backup(){
 create_first_archive(){
 	
 	# check if catalogue is new
-	if [ "$first_time" -eq "1" ]; then
+	if [ "$first_time" -eq "1" ] && [ "$flag_process" -eq "0" ]; then
 	       tar cvf "$first_time_catalogue.tar" $MY_PATH/test/$fist_time_catalogue/ 
 	       gzip "$first_time_catalogue.tar" 
 	       rm "$first_time_catalogue.tar" 
@@ -139,16 +139,24 @@ create_first_archive(){
 
 update_old_archive(){
 
-	# Create temprary catalogue	
-	mkdir $HOME/TMP/
 	# copy old archive from flashdisc to PC catalogue
-	if [ "$first_time" -eq "0" ]; then
-		cp -r  $flashdisc_path/$disc_name/$update_catalogue/  $HOME/TMP/
- 		sleep 100000 
-	fi
+	if [ "$first_time" -eq "0" ] && [ "$flag_process" -eq "0" ]; then
+		catalogue_date=$(date +%F -r $line)
+		archive_date=$(date +%F -r $flashdisc_path/$disc_name/$update_archive)
 
-	# delete TMP catalogue
-	rm -r $HOME/TMP/
+		echo "$catalogue_date"
+		echo "$archive_date"
+
+		if [[ "$catalogue_date" > "$archive_date" ]]; then
+			 echo "Make a archive"
+			 tar cvf "$catalogue_name.tar" $line 
+			 gzip "$catalogue_name.tar" 
+			 rm  $flashdisc_path/$disc_name/$catalogue_name.tar.gz
+			 mv $catalogue_name.tar.gz $flashdisc_path/$disc_name/
+		 else
+			 echo "Do not need to update catalogue $catalogue_name."
+		fi	       
+	fi
 }
 
 
@@ -169,9 +177,8 @@ while read line; do
 	check_if_path_exists
 	name_backup_catalogue
 	first_time_backup
-	# create_first_archive
+	create_first_archive
 	update_old_archive
 done <$name_backup_file_list
 
-# echo ${PATHS[@]}
-
+echo "End of script"
