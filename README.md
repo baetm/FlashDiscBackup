@@ -60,7 +60,7 @@ and then it may run the script in command:
 
 ```
 $ ./flashdiscbackup.bash
-'''
+```
 
 ## Status
 The first version of the script is done, but there is more functionality
