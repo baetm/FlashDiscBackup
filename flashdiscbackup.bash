@@ -17,7 +17,8 @@
 # GNU General Public License at <http://www.gnu.org/licenses/> for
 # more details.
 
-# Usage: TO DO
+# Usage: 
+# README.md has description.
 
 # Revision history
 # 2022-06-16 Created
@@ -27,11 +28,11 @@
 ### VARIABLES 
 
 # backup list of catalogues
-name_backup_file_list="lst_test.txt"
+name_backup_file_list="list-name.txt"
 
 # path to the where pendrive should be mount
 flashdisc_path=/media/$USER
-disc_name=806E-B46B
+disc_name=flashdisc_name
 
 # list of flashdisc catalogues 
 CATALOGUES=()
