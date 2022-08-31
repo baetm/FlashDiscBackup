@@ -32,7 +32,7 @@ flashdisc and check the path of the mount.
 ```
 flashdisc_path=/media/$USER
 
-disc_name=name-of_flashdisc
+disc_name=name-of-flashdisc
 ```
 
 After that, there should be a prepared list of the absolute paths to backup on
@@ -55,10 +55,11 @@ emulator:
 ```
 $ sudo chmod +x flashdiscbackup.bash
 ```
+
 and then it may run the script in command:
 
 ```
-$ ./flashdiscbackup
+$ ./flashdiscbackup.bash
 '''
 
 ## Status
