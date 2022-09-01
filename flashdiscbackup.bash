@@ -28,11 +28,11 @@
 ### VARIABLES 
 
 # backup list of catalogues
-name_backup_file_list="list-name.txt"
+name_backup_file_list="lst_test.txt"
 
 # path to the where pendrive should be mount
 flashdisc_path=/media/$USER
-disc_name=flashdisc_name
+disc_name=806E-B46B 
 
 # list of flashdisc catalogues 
 CATALOGUES=()
@@ -122,13 +122,18 @@ create_first_archive(){
 	
 	# check if catalogue is new
 	if [ "$first_time" -eq "1" ] && [ "$flag_process" -eq "0" ]; then
-	       tar cvf "$first_time_catalogue.tar" $MY_PATH/test/$fist_time_catalogue/ 
+	       echo "Tar archive creating..."
+	       tar cvf "$first_time_catalogue.tar" $line 
+	       echo "Creating is done."
+	       echo "Gzip archive creating..."
 	       gzip "$first_time_catalogue.tar" 
-	       rm "$first_time_catalogue.tar" 
-	       cp "$first_time_catalogue.tar.gzp" $flashdisc_path/$disc_name/
-
-	       # echo "$first_time_catalogue"
-	       # echo "$line"
+	       echo "Creating is done."
+	       echo "Copying archive to flashdisc..."
+	       cp "$first_time_catalogue.tar.gz" $flashdisc_path/$disc_name/
+	       echo "Copying is done."
+	       echo "Remove old archive"
+	       rm "$first_time_catalogue.tar.gz" 
+	       echo "Removing is done."
 	fi
 }
 
@@ -140,11 +145,18 @@ update_old_archive(){
 		archive_date=$(date +%F -r $flashdisc_path/$disc_name/$update_archive)
 
 		if [[ "$catalogue_date" > "$archive_date" ]]; then
-			 echo "Make a archive"
+			 echo "Making a tar archive..."
 			 tar cvf "$catalogue_name.tar" $line 
+			 echo "The tar archive was done"
+			 echo "Making a gzip archive..."
 			 gzip "$catalogue_name.tar" 
+			 echo "The gzip archive was done"
+			 echo "Deleting old archive in the flashdisc..."
 			 rm  $flashdisc_path/$disc_name/$catalogue_name.tar.gz
+			 echo "Delete was done"			
+			 echo "Moving new archive to the flashdisc..."
 			 mv $catalogue_name.tar.gz $flashdisc_path/$disc_name/
+			 echo "Move was done"
 		 else
 			 echo "Do not need to update catalogue $catalogue_name."
 		fi	       
