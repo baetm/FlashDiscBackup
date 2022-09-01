@@ -71,6 +71,7 @@ TO DO a list of functions:
 * add to read the name of the flashdisc and list of catalogues like input
 parameters,
 * add the check for free size on the flashdisc,
+* add divide big catalogues for smaller archives,
 * add to choose the criptography of the catalogues,
 * recognize if catalogues are video content, graphics or audio files.
 
