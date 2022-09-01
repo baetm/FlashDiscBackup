@@ -53,16 +53,17 @@
 # Revision history
 # 2022-06-16 Created
 # 2022-08-31 Version: 1.0
+# 2022-09-01 Version: 1.1
 # ---------------------------------------------------------------------
 
 ### VARIABLES 
 
 # backup list of catalogues
-name_backup_file_list="lst_test.txt"
+name_backup_file_list="list-of-catalogues.txt"
 
 # path to the where pendrive should be mount
 flashdisc_path=/media/$USER
-disc_name=806E-B46B 
+disc_name=name-of-flashdisc 
 
 # list of flashdisc catalogues 
 CATALOGUES=()
